@@ -330,6 +330,7 @@ function sendToSheet(index,text,choice){
 
 fetch(WEB_APP_URL,{
 method:"POST",
+mode:"no-cors",
 headers:{
 "Content-Type":"application/json"
 },
@@ -338,10 +339,7 @@ index:index,
 text:text,
 choice:choice
 })
-})
-.then(response=>response.json())
-.then(data=>console.log("Saved:",data))
-.catch(error=>console.error("Error:",error));
+});
 
 }
 
