@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Access Granted</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================= */
+/* RESET */
+/* ============================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+background:rgb(255, 255, 255);
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:'Poppins',sans-serif;
+}
+
+/* ============================= */
+/* BACKGROUND LAYER */
+/* ============================= */
+
+.background{
+position:fixed;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center,#ffffff 0%,#f3e5e1 50%,#e6d5cf 100%);
+opacity:0;
+animation:fadeInBg 3s ease forwards;
+}
+
+@keyframes fadeInBg{
+to{opacity:1;}
+}
+
+/* Floating particles */
+.particles{
+position:fixed;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+.particle{
+position:absolute;
+width:6px;
+height:6px;
+background:rgba(93,64,55,0.15);
+border-radius:50%;
+animation:float 18s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
+}
+
+/* ============================= */
+/* CONTENT */
+/* ============================= */
+
+.container{
+position:relative;
+text-align:center;
+z-index:2;
+opacity:0;
+animation:fadeContent 3s ease 2s forwards;
+}
+
+@keyframes fadeContent{
+to{opacity:1;}
+}
+
+.message{
+font-family:'Playfair Display',serif;
+font-size:64px;
+letter-spacing:2px;
+color:#3e2723;
+opacity:0;
+transform:scale(0.95);
+transition:all 1.5s ease;
+min-height:120px;
+}
+
+.show{
+opacity:1;
+transform:scale(1);
+}
+
+.dim{
+opacity:0.3;
+}
+
+.highlight{
+color:#5d4037;
+text-shadow:0 0 20px rgba(93,64,55,0.2);
+animation:glow 2s ease forwards;
+}
+
+@keyframes glow{
+0%{text-shadow:0 0 0 rgba(93,64,55,0);}
+100%{text-shadow:0 0 25px rgba(93,64,55,0.35);}
+}
+
+/* Enter button */
+
+button{
+margin-top:60px;
+padding:14px 40px;
+font-size:16px;
+border:none;
+border-radius:40px;
+background:#5d4037;
+color:white;
+cursor:pointer;
+opacity:0;
+transform:translateY(20px);
+transition:all 1s ease;
+}
+
+button.show{
+opacity:1;
+transform:translateY(0);
+}
+
+button:hover{
+transform:translateY(-2px) scale(1.05);
+}
+
+/* Slow zoom effect */
+.zoom{
+animation:zoomIn 40s ease forwards;
+}
+
+@keyframes zoomIn{
+from{transform:scale(1);}
+to{transform:scale(1.05);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background zoom"></div>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+<div id="text" class="message"></div>
+<button id="enterBtn" onclick="enterSite()">Enter</button>
+</div>
+
+<audio id="bgMusic" src="music.mp3"></audio>
+
+<script>
+
+/* ============================= */
+/* CREATE PARTICLES */
+/* ============================= */
+
+const particlesContainer = document.getElementById("particles");
+
+for(let i=0;i<25;i++){
+const p=document.createElement("div");
+p.classList.add("particle");
+p.style.left=Math.random()*100+"%";
+p.style.animationDuration=(15+Math.random()*10)+"s";
+particlesContainer.appendChild(p);
+}
+
+/* ============================= */
+/* TEXT SEQUENCE */
+/* ============================= */
+
+const textElement=document.getElementById("text");
+const enterBtn=document.getElementById("enterBtn");
+
+const sequence=[
+"ACCESS GRANTED.",
+"Happy Birthday,<br><span class='highlight'>Sakina.</span>",
+"Everyone will wish you today.",
+"I just didn’t want to do it normally."
+];
+
+let index=0;
+
+function nextLine(){
+
+if(index>0){
+textElement.classList.remove("show");
+textElement.classList.add("dim");
+}
+
+setTimeout(()=>{
+
+textElement.innerHTML=sequence[index];
+textElement.classList.remove("dim");
+textElement.classList.add("show");
+
+index++;
+
+if(index<sequence.length){
+setTimeout(nextLine,6000);
+}else{
+setTimeout(()=>{
+enterBtn.classList.add("show");
+},4000);
+}
+
+},1500);
+}
+
+setTimeout(nextLine,4000);
+
+/* ============================= */
+/* ENTER */
+/* ============================= */
+
+/* ============================= */
+/* MULTI-CLICK ENTER SEQUENCE */
+/* ============================= */
+
+let enterClicks = 0;
+
+function enterSite(){
+
+const textElement = document.getElementById("text");
+const enterBtn = document.getElementById("enterBtn");
+
+enterClicks++;
+
+if(enterClicks === 1){
+textElement.innerHTML = "Are you sure,<br><span class='highlight'>Sakina?</span>";
+textElement.classList.add("show");
+}
+
+else if(enterClicks === 2){
+textElement.innerHTML = "There’s no going back,<br><span class='highlight'>Sakina.</span>";
+}
+
+else if(enterClicks === 3){
+textElement.innerHTML = "It’s risky… you might faint. 😏";
+}
+
+else if(enterClicks === 4){
+
+enterBtn.innerText = "Okay. Enter.";
+enterBtn.style.transform = "scale(1.1)";
+}
+
+else if(enterClicks === 5){
+
+const music=document.getElementById("bgMusic");
+music.volume=0.4;
+music.play();
+
+document.body.style.transition="opacity 1.5s ease";
+document.body.style.opacity="0";
+
+setTimeout(()=>{
+window.location.href="phase2.html";
+},1500);
+}
+
+}
+
+</script>
+
+</body>
+</html>

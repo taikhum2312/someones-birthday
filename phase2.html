@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Things I’ve Noticed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================= */
+/* BASE */
+/* ============================= */
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(to bottom,#ffffff,#f5ebe6);
+color:#3e2723;
+overflow:hidden;
+}
+
+/* ============================= */
+/* SWIPE SECTION */
+/* ============================= */
+
+.swipe-wrapper{
+position:relative;
+height:100vh;
+overflow:hidden;
+}
+
+.swipe-container{
+display:flex;
+width:400vw;
+height:100vh;
+transition:transform 0.7s ease;
+}
+
+.panel{
+width:100vw;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:40px;
+font-family:'Playfair Display',serif;
+font-size:38px;
+position:relative;
+}
+
+.tap-indicator{
+position:absolute;
+bottom:40px;
+font-family:'Poppins',sans-serif;
+font-size:14px;
+opacity:0.6;
+animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
+}
+
+/* ============================= */
+/* CHOCOLATE SECTION */
+/* ============================= */
+
+.choco-section{
+display:none;
+height:100vh;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:30px;
+animation:fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+.choco-section h2{
+font-family:'Playfair Display',serif;
+margin-bottom:25px;
+font-size:34px;
+}
+
+.choco-grid{
+display:grid;
+grid-template-columns:repeat(3,80px);
+gap:25px;
+margin-bottom:30px;
+}
+
+.choco{
+font-size:50px;
+cursor:pointer;
+transition:transform 0.3s ease;
+}
+
+.choco:hover{
+transform:scale(1.15);
+}
+
+.reveal{
+max-width:520px;
+min-height:90px;
+font-size:18px;
+text-align:center;
+line-height:1.6;
+}
+
+.next-btn{
+margin-top:40px;
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:#5d4037;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.next-btn:hover{
+transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ============================= -->
+<!-- SWIPE PANELS -->
+<!-- ============================= -->
+
+<div class="swipe-wrapper">
+<div class="swipe-container" id="swipe">
+
+<div class="panel">
+Before we go further…
+<div class="tap-indicator">Tap to continue →</div>
+</div>
+
+<div class="panel">
+There are a few things I’ve noticed.
+<div class="tap-indicator">Tap to continue →</div>
+</div>
+
+<div class="panel">
+Nothing dramatic.
+<div class="tap-indicator">Tap to continue →</div>
+</div>
+
+<div class="panel">
+Just things that matter.
+<div class="tap-indicator">Tap to continue →</div>
+</div>
+
+</div>
+</div>
+
+<!-- ============================= -->
+<!-- CHOCOLATE SECTION -->
+<!-- ============================= -->
+
+<div class="choco-section" id="chocoSection">
+
+<h2>Things I’ve Noticed.</h2>
+
+<div class="choco-grid">
+
+<!-- ===== 6 CHOCOLATES (ACTIVE DEFAULT) ===== -->
+<div class="choco" onclick="revealText(0)">🍫</div>
+<div class="choco" onclick="revealText(1)">🍫</div>
+<div class="choco" onclick="revealText(2)">🍫</div>
+<div class="choco" onclick="revealText(3)">🍫</div>
+<div class="choco" onclick="revealText(4)">🍫</div>
+<div class="choco" onclick="revealText(5)">🍫</div>
+
+<!-- ===== 8 CHOCOLATES (COMMENTED OPTION) ===== -->
+<!--
+<div class="choco" onclick="revealText(0)">🍫</div>
+<div class="choco" onclick="revealText(1)">🍫</div>
+<div class="choco" onclick="revealText(2)">🍫</div>
+<div class="choco" onclick="revealText(3)">🍫</div>
+<div class="choco" onclick="revealText(4)">🍫</div>
+<div class="choco" onclick="revealText(5)">🍫</div>
+<div class="choco" onclick="revealText(6)">🍫</div>
+<div class="choco" onclick="revealText(7)">🍫</div>
+-->
+
+</div>
+
+<div class="reveal" id="revealText"></div>
+
+<button class="next-btn" onclick="goNext()">Continue</button>
+
+</div>
+
+<script>
+
+/* ============================= */
+/* SWIPE LOGIC */
+/* ============================= */
+
+let currentPanel=0;
+const swipe=document.getElementById("swipe");
+
+function nextPanel(){
+currentPanel++;
+if(currentPanel<4){
+swipe.style.transform="translateX(-"+(currentPanel*100)+"vw)";
+}else{
+document.querySelector(".swipe-wrapper").style.display="none";
+document.getElementById("chocoSection").style.display="flex";
+}
+}
+
+document.body.addEventListener("click",function(e){
+if(e.target.closest(".panel")){
+nextPanel();
+}
+});
+
+/* ============================= */
+/* TEXT CONTENT */
+/* ============================= */
+
+/* ===== 6 TEXT VERSION (ACTIVE) ===== */
+
+const texts6=[
+"You care more deeply than you let people see.",
+"You value consistency more than big gestures.",
+"You notice effort, even when you don’t say it.",
+"You don’t open up to everyone.",
+"You are more important than you think.",
+"You don’t feel temporary."
+];
+
+/* ===== 8 TEXT VERSION (COMMENTED OPTION) ===== */
+/*
+const texts6=[
+"You care more deeply than you let people see.",
+"You value consistency more than big gestures.",
+"You notice effort, even when you don’t say it.",
+"You don’t open up to everyone.",
+"You are more important than you think.",
+"You don’t feel temporary.",
+"You make ordinary days feel different.",
+"You deserve to feel chosen."
+];
+*/
+
+/* ============================= */
+/* TYPEWRITER */
+/* ============================= */
+
+function revealText(index){
+
+const container=document.getElementById("revealText");
+container.innerHTML="";
+let text=texts6[index];
+let i=0;
+
+function type(){
+if(i<text.length){
+container.innerHTML+=text.charAt(i);
+i++;
+setTimeout(type,40);
+}
+}
+
+type();
+}
+
+/* ============================= */
+/* NEXT PHASE */
+/* ============================= */
+
+function goNext(){
+window.location.href="phase3.html";
+}
+
+</script>
+
+</body>
+</html>
