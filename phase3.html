@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Moments</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(to bottom,#ffffff,#f5ebe6);
+color:#3e2723;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+flex-direction:column;
+padding:20px;
+}
+
+.message{
+font-family:'Playfair Display',serif;
+font-size:38px;
+margin-bottom:40px;
+max-width:600px;
+opacity:0;
+transition:opacity 1s ease;
+}
+
+.show{
+opacity:1;
+}
+
+button{
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:#5d4037;
+color:white;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+.video-container{
+display:none;
+flex-direction:column;
+align-items:center;
+}
+
+video{
+width:90%;
+max-width:600px;
+border-radius:12px;
+margin-bottom:30px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="scene1">
+
+<div id="line1" class="message">These aren’t big moments.</div>
+
+<div id="line2" class="message">Just moments I liked.</div>
+
+<button id="showBtn" style="display:none;" onclick="showVideo()">Show me</button>
+
+</div>
+
+<div id="videoSection" class="video-container">
+
+<video id="memoryVideo" controls>
+<source src="memory.mp4" type="video/mp4">
+</video>
+
+<div id="afterMessage" class="message"></div>
+
+<button id="nextBtn" style="display:none;" onclick="goNext()">Continue</button>
+
+</div>
+
+<script>
+
+/* Scene 1 Timing */
+
+setTimeout(()=>{
+document.getElementById("line1").classList.add("show");
+},1000);
+
+setTimeout(()=>{
+document.getElementById("line2").classList.add("show");
+},4000);
+
+setTimeout(()=>{
+document.getElementById("showBtn").style.display="inline-block";
+},7000);
+
+/* Show Video */
+
+function showVideo(){
+
+document.getElementById("scene1").style.display="none";
+document.getElementById("videoSection").style.display="flex";
+
+}
+
+/* Video End Event */
+
+const video=document.getElementById("memoryVideo");
+
+video.onended=function(){
+
+const msg=document.getElementById("afterMessage");
+
+msg.innerHTML="Some people deserve effort.<br><br>You’re one of them.";
+
+msg.classList.add("show");
+
+document.getElementById("nextBtn").style.display="inline-block";
+
+}
+
+/* Next Phase */
+
+function goNext(){
+window.location.href="phase4.html";
+}
+
+</script>
+
+</body>
+</html>

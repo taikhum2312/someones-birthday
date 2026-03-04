@@ -105,6 +105,13 @@ cursor:pointer;
 transition:transform 0.3s ease;
 }
 
+.choco.eaten{
+opacity:0.35;
+transform:scale(0.85);
+pointer-events:none;
+filter:grayscale(40%);
+}
+
 .choco:hover{
 transform:scale(1.15);
 }
@@ -128,15 +135,48 @@ cursor:pointer;
 transition:0.3s;
 }
 
+.next-btn:disabled{
+opacity:0.4;
+cursor:not-allowed;
+transform:none;
+}
 .next-btn:hover{
 transform:scale(1.05);
 }
 
+#confetti{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+}
+
+.confetti-piece{
+position:absolute;
+width:8px;
+height:8px;
+background:#5d4037;
+opacity:0.8;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-10vh) rotate(0deg);
+}
+100%{
+transform:translateY(100vh) rotate(720deg);
+opacity:0;
+}
+}
 </style>
 </head>
 
 <body>
-
+<div id="confetti"></div>
 <!-- ============================= -->
 <!-- SWIPE PANELS -->
 <!-- ============================= -->
@@ -178,12 +218,12 @@ Just things that matter.
 <div class="choco-grid">
 
 <!-- ===== 6 CHOCOLATES (ACTIVE DEFAULT) ===== -->
-<div class="choco" onclick="revealText(0)">🍫</div>
-<div class="choco" onclick="revealText(1)">🍫</div>
-<div class="choco" onclick="revealText(2)">🍫</div>
-<div class="choco" onclick="revealText(3)">🍫</div>
-<div class="choco" onclick="revealText(4)">🍫</div>
-<div class="choco" onclick="revealText(5)">🍫</div>
+<div id="choco0" class="choco" onclick="revealText(0)">🍫</div>
+<div id="choco1" class="choco" onclick="revealText(1)">🍫</div>
+<div id="choco2" class="choco" onclick="revealText(2)">🍫</div>
+<div id="choco3" class="choco" onclick="revealText(3)">🍫</div>
+<div id="choco4" class="choco" onclick="revealText(4)">🍫</div>
+<div id="choco5" class="choco" onclick="revealText(5)">🍫</div>
 
 <!-- ===== 8 CHOCOLATES (COMMENTED OPTION) ===== -->
 <!--
@@ -200,12 +240,17 @@ Just things that matter.
 </div>
 
 <div class="reveal" id="revealText"></div>
+<div id="completionMessage"></div>
 
-<button class="next-btn" onclick="goNext()">Continue</button>
-
+<button id="nextBtn" class="next-btn" onclick="goNext()" disabled>
+Continue
+</button>
 </div>
 
 <script>
+
+let chocolatesOpened = 0;
+const totalChocolates = 6;
 /* ============================= */
 /* CONFIG – PUT YOUR WEB APP URL HERE */
 /* ============================= */
@@ -240,24 +285,76 @@ nextPanel();
 /* TEXT CONTENT */
 /* ============================= */
 
-const texts6=[
-"You care more deeply than you let people see.",
-"You value consistency more than big gestures.",
-"You notice effort, even when you don’t say it.",
-"You don’t open up to everyone.",
-"You are more important than you think.",
-"You don’t feel temporary."
-];
+const chocolates = [
 
+    {
+    text: "You care more deeply than you let people see.",
+    options: [
+        { label: "Maybe I do.", reaction: "I know you do." },
+        { label: "Not really.", reaction: "You hide it well then." }
+    ]
+    },
+
+    {
+    text: "You value consistency more than big gestures.",
+    options: [
+        { label: "Consistency matters.", reaction: "Exactly." },
+        { label: "Big gestures are nice too.", reaction: "Only when they’re real." }
+    ]
+    },
+
+    {
+    text: "You notice effort, even when you don’t say it.",
+    options: [
+        { label: "I notice everything.", reaction: "I’m aware." },
+        { label: "I don’t pay attention.", reaction: "That’s not true." }
+    ]
+    },
+
+    {
+    text: "You don’t open up to everyone.",
+    options: [
+        { label: "I’m selective.", reaction: "That’s a strength." },
+        { label: "I’m open.", reaction: "Only when it feels safe." }
+    ]
+    },
+
+    {
+    text: "You are more important than you think.",
+    options: [
+        { label: "I don’t see it.", reaction: "One day you will." },
+        { label: "Maybe I am.", reaction: "I thought so." }
+    ]
+    },
+
+    {
+    text: "You don’t feel temporary.",
+    options: [
+        { label: "What does that mean?", reaction: "It means you stay." },
+        { label: "That’s heavy.", reaction: "Only slightly." }
+    ]
+    }
+
+];
 /* ============================= */
 /* TYPEWRITER + RESPONSE SYSTEM */
 /* ============================= */
 
 function revealText(index){
 
+const choco = document.getElementById("choco"+index);
+
+if(!choco.classList.contains("eaten")){
+    choco.classList.add("eaten");
+    chocolatesOpened++;
+}
+
+checkCompletion();
+
 const container=document.getElementById("revealText");
 container.innerHTML="";
-let text=texts6[index];
+
+let text=chocolates[index].text;
 let i=0;
 
 function type(){
@@ -266,7 +363,7 @@ container.innerHTML+=text.charAt(i);
 i++;
 setTimeout(type,40);
 }else{
-showOptions(index,text);
+showOptions(index);
 }
 }
 
@@ -277,28 +374,31 @@ type();
 /* SHOW RESPONSE BUTTONS */
 /* ============================= */
 
-function showOptions(index,text){
+function showOptions(index){
 
 const container=document.getElementById("revealText");
 
 const optionsDiv=document.createElement("div");
 optionsDiv.style.marginTop="20px";
 
+const option1=chocolates[index].options[0];
+const option2=chocolates[index].options[1];
+
 const btn1=document.createElement("button");
-btn1.innerText="That feels true.";
+btn1.innerText=option1.label;
 btn1.className="next-btn";
 btn1.style.marginRight="10px";
 
 const btn2=document.createElement("button");
-btn2.innerText="I don’t know about that.";
+btn2.innerText=option2.label;
 btn2.className="next-btn";
 
 btn1.onclick=function(){
-handleResponse(index,text,"That feels true.","I thought so.");
+handleResponse(index,option1.label,option1.reaction);
 };
 
 btn2.onclick=function(){
-handleResponse(index,text,"I don’t know about that.","Maybe one day you will.");
+handleResponse(index,option2.label,option2.reaction);
 };
 
 optionsDiv.appendChild(btn1);
@@ -311,14 +411,18 @@ container.appendChild(optionsDiv);
 /* HANDLE RESPONSE */
 /* ============================= */
 
-function handleResponse(index,text,choice,reaction){
+function handleResponse(index,choice,reaction){
 
 const container=document.getElementById("revealText");
 
 container.innerHTML += "<br><br><em>"+reaction+"</em>";
 container.innerHTML += "<br><br><strong>Noted.</strong>";
 
-sendToSheet(index,text,choice);
+sendToSheet(
+index,
+chocolates[index].text,
+choice
+);
 
 }
 
@@ -349,6 +453,50 @@ choice:choice
 
 function goNext(){
 window.location.href="phase3.html";
+}
+function checkCompletion(){
+
+const btn = document.getElementById("nextBtn");
+
+if(chocolatesOpened === totalChocolates){
+
+btn.disabled = false;
+btn.innerText = "Continue";
+
+celebrateCompletion();
+
+}else{
+
+btn.innerText = "Finish the chocolates first";
+
+}
+
+}
+
+checkCompletion();
+
+function celebrateCompletion(){
+
+const message = document.getElementById("completionMessage");
+
+message.innerHTML = "<br><strong>Nice. You finished them.</strong>";
+
+for(let i=0;i<40;i++){
+
+const piece=document.createElement("div");
+piece.className="confetti-piece";
+
+piece.style.left=Math.random()*100+"vw";
+piece.style.background=["#5d4037","#8d6e63","#d7ccc8"][Math.floor(Math.random()*3)];
+
+piece.style.animationDuration=(2+Math.random()*2)+"s";
+
+document.getElementById("confetti").appendChild(piece);
+
+setTimeout(()=>piece.remove(),3000);
+
+}
+
 }
 
 </script>
