@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>One Last Thing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(to bottom,#ffffff,#f5ebe6);
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:#3e2723;
+padding:20px;
+}
+
+.message{
+font-family:'Playfair Display',serif;
+font-size:36px;
+margin-bottom:25px;
+opacity:0;
+transition:opacity 1s;
+}
+
+.show{
+opacity:1;
+}
+
+.envelope{
+font-size:90px;
+margin:30px 0;
+transition:transform 0.3s;
+}
+
+button{
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:#5d4037;
+color:white;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+position:relative;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="line1" class="message">There’s one last thing.</div>
+<div id="line2" class="message">But once you open it…</div>
+<div id="line3" class="message">You can’t pretend you didn’t see it.</div>
+
+<div class="envelope">📩</div>
+
+<button id="openBtn">Open it</button>
+
+<script>
+
+let attempts=0;
+const btn=document.getElementById("openBtn");
+
+setTimeout(()=>document.getElementById("line1").classList.add("show"),1000);
+setTimeout(()=>document.getElementById("line2").classList.add("show"),3500);
+setTimeout(()=>document.getElementById("line3").classList.add("show"),6000);
+
+btn.onclick=function(){
+
+attempts++;
+
+if(attempts===1){
+btn.innerText="Are you sure?";
+moveButton();
+}
+
+else if(attempts===2){
+btn.innerText="Last chance to go back.";
+moveButton();
+}
+
+else if(attempts===3){
+btn.innerText="Alright… open it.";
+moveButton();
+}
+
+else{
+window.location.href="phase5.html";
+}
+
+}
+
+function moveButton(){
+
+let x=(Math.random()*200)-100;
+let y=(Math.random()*100)-50;
+
+btn.style.transform="translate("+x+"px,"+y+"px)";
+
+}
+
+</script>
+
+</body>
+</html>

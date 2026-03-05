@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Sakina</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(to bottom,#ffffff,#f3e8e3);
+color:#3e2723;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:40px 20px;
+}
+
+.container{
+max-width:700px;
+text-align:center;
+}
+
+.title{
+font-family:'Playfair Display',serif;
+font-size:48px;
+margin-bottom:40px;
+opacity:0;
+transition:opacity 1.5s;
+}
+
+.message{
+font-size:18px;
+line-height:1.8;
+margin-bottom:25px;
+opacity:0;
+transform:translateY(10px);
+transition:all 1s ease;
+}
+
+.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.signature{
+font-family:'Playfair Display',serif;
+font-size:24px;
+margin-top:40px;
+opacity:0;
+transition:opacity 1.5s;
+}
+
+#sparkles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+}
+
+.sparkle{
+position:absolute;
+width:6px;
+height:6px;
+background:#d7a86e;
+border-radius:50%;
+opacity:0.8;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(100vh) scale(0.5);
+opacity:0;
+}
+50%{
+opacity:1;
+}
+100%{
+transform:translateY(-10vh) scale(1);
+opacity:0;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" autoplay loop>
+<source src="birthday-music.mp3" type="audio/mpeg">
+</audio>
+<div id="sparkles"></div>
+
+<div class="container">
+
+<div class="title" id="title">Happy Birthday, Sakina.</div>
+
+<div class="message" id="line1">
+There are a lot of things I could say today.
+</div>
+
+<div class="message" id="line2">
+But the truth is, your presence in my life has quietly become something important.
+</div>
+
+<div class="message" id="line3">
+You're the person who somehow knows how to calm me down when I'm angry.
+</div>
+
+<div class="message" id="line4">
+The one who clears my doubts when my mind is confused.
+</div>
+
+<div class="message" id="line5">
+And even when I'm stressed or irritated, you still manage to bring me back to a better mood.
+</div>
+
+<div class="message" id="line6">
+Not many people have that kind of patience.
+</div>
+
+<div class="message" id="line7">
+You deal with my worst moods without turning them into a fight.
+</div>
+
+<div class="message" id="line8">
+Even when I send messages that are rude or frustrating, you don't disappear.
+</div>
+
+<div class="message" id="line9">
+You stay.
+</div>
+
+<div class="message" id="line10">
+And that says a lot about the kind of person you are.
+</div>
+
+<div class="message" id="line11">
+So today isn't just about wishing you a happy birthday.
+</div>
+
+<div class="message" id="line12">
+It's about reminding you that you matter more than you think.
+</div>
+
+<div class="signature" id="end">
+Happy Birthday again, Sakina.
+</div>
+
+</div>
+
+<script>
+
+function reveal(id,delay){
+setTimeout(()=>{
+document.getElementById(id).classList.add("show");
+},delay);
+}
+
+reveal("title",1000);
+reveal("line1",3500);
+reveal("line2",6000);
+reveal("line3",8500);
+reveal("line4",11000);
+reveal("line5",13500);
+reveal("line6",16000);
+reveal("line7",18500);
+reveal("line8",21000);
+reveal("line9",23500);
+reveal("line10",26000);
+reveal("line11",28500);
+reveal("line12",31000);
+reveal("end",34000);
+
+/* Sparkle generator */
+
+setInterval(()=>{
+
+let sparkle=document.createElement("div");
+sparkle.className="sparkle";
+
+sparkle.style.left=Math.random()*100+"vw";
+sparkle.style.animationDuration=(4+Math.random()*4)+"s";
+
+document.getElementById("sparkles").appendChild(sparkle);
+
+setTimeout(()=>sparkle.remove(),7000);
+
+},400);
+
+
+/* Mobile music fix */
+
+document.body.addEventListener("click",()=>{
+const music=document.getElementById("bgMusic");
+music.play().catch(()=>{});
+},{once:true});
+
+</script>
+
+</body>
+</html>
