@@ -2,10 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>One Last Thing</title>
+<title>Before You Open This</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 
@@ -17,23 +17,27 @@ box-sizing:border-box;
 
 body{
 font-family:'Poppins',sans-serif;
-background:linear-gradient(to bottom,#ffffff,#f5ebe6);
-height:100vh;
+background:linear-gradient(to bottom,#ffffff,#f3e8e3);
+color:#3e2723;
+min-height:100vh;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-color:#3e2723;
 padding:20px;
 }
 
-.message{
+.container{
+max-width:600px;
+width:100%;
+}
+
+.title{
 font-family:'Playfair Display',serif;
-font-size:36px;
-margin-bottom:25px;
+font-size:34px;
+margin-bottom:20px;
 opacity:0;
-transition:opacity 1s;
+transition:opacity 1.2s;
 }
 
 .show{
@@ -43,23 +47,103 @@ opacity:1;
 .envelope{
 font-size:90px;
 margin:30px 0;
-transition:transform 0.3s;
+transition:transform 0.6s;
 }
 
 button{
-padding:12px 30px;
+margin-top:20px;
+padding:10px 25px;
 border:none;
-border-radius:30px;
+border-radius:25px;
 background:#5d4037;
 color:white;
 cursor:pointer;
-font-size:16px;
-transition:0.3s;
-position:relative;
+font-size:15px;
 }
 
 button:hover{
 transform:scale(1.05);
+}
+
+.agreement{
+display:none;
+margin-top:20px;
+text-align:left;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.agreement label{
+display:block;
+margin:10px 0;
+}
+
+canvas{
+border:1px solid #ddd;
+border-radius:6px;
+margin-top:10px;
+touch-action:none;
+}
+
+.clearBtn{
+background:#999;
+margin-left:10px;
+}
+
+.letter{
+display:none;
+font-size:60px;
+margin-top:20px;
+animation:slideUp 0.8s ease forwards;
+}
+
+@keyframes slideUp{
+from{
+transform:translateY(40px);
+opacity:0;
+}
+to{
+transform:translateY(0);
+opacity:1;
+}
+}
+
+#nextBtn{
+display:none;
+}
+
+#sparkles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+.sparkle{
+position:absolute;
+width:6px;
+height:6px;
+background:#d7a86e;
+border-radius:50%;
+animation:float 4s linear forwards;
+}
+
+@keyframes float{
+0%{
+transform:translateY(100vh);
+opacity:0;
+}
+50%{
+opacity:1;
+}
+100%{
+transform:translateY(-10vh);
+opacity:0;
+}
 }
 
 </style>
@@ -67,58 +151,233 @@ transform:scale(1.05);
 
 <body>
 
-<div id="line1" class="message">There’s one last thing.</div>
-<div id="line2" class="message">But once you open it…</div>
-<div id="line3" class="message">You can’t pretend you didn’t see it.</div>
+<div class="container">
 
-<div class="envelope">📩</div>
+<div id="line1" class="title">Before you open this…</div>
+<div id="line2" class="title">There are a few conditions.</div>
 
-<button id="openBtn">Open it</button>
+<div class="envelope" id="envelope">📩</div>
+
+<button id="conditionsBtn" style="display:none;">What conditions?</button>
+
+<div class="agreement" id="agreementBox">
+
+<h3 style="margin-bottom:10px;">Sakina Agreement Form</h3>
+
+<label><input type="checkbox"> I promise I will not get mad.</label>
+<label><input type="checkbox"> I promise I will not overthink this.</label>
+<label><input type="checkbox"> I promise I will not say my time was wasted.</label>
+<label><input type="checkbox"> I promise I will not feel guilty about the effort.</label>
+<label><input type="checkbox"> I promise I will just read it.</label>
+
+<p style="margin-top:15px;">Sign here:</p>
+
+<canvas id="signaturePad" width="300" height="120"></canvas>
+
+<div>
+<button id="acceptBtn">Accept & Open</button>
+<button class="clearBtn" onclick="clearSignature()">Clear</button>
+</div>
+
+</div>
+
+<div class="letter" id="letter">💌</div>
+
+<button id="nextBtn" onclick="goNext()">Open the final page</button>
+
+</div>
+
+<div id="sparkles"></div>
 
 <script>
 
-let attempts=0;
-const btn=document.getElementById("openBtn");
+/* TEXT TIMING */
 
-setTimeout(()=>document.getElementById("line1").classList.add("show"),1000);
-setTimeout(()=>document.getElementById("line2").classList.add("show"),3500);
-setTimeout(()=>document.getElementById("line3").classList.add("show"),6000);
+setTimeout(()=>{
+document.getElementById("line1").classList.add("show");
+},1000);
 
-btn.onclick=function(){
+setTimeout(()=>{
+document.getElementById("line2").classList.add("show");
+},3500);
 
-attempts++;
+setTimeout(()=>{
+document.getElementById("conditionsBtn").style.display="inline-block";
+},5500);
 
-if(attempts===1){
-btn.innerText="Are you sure?";
-moveButton();
+
+/* SHOW AGREEMENT */
+
+document.getElementById("conditionsBtn").onclick=function(){
+document.getElementById("agreementBox").style.display="block";
+this.style.display="none";
+};
+
+
+/* SIGNATURE PAD */
+
+const canvas = document.getElementById("signaturePad");
+const ctx = canvas.getContext("2d");
+
+let drawing = false;
+let hasSigned = false;
+
+function getPosition(e){
+
+const rect = canvas.getBoundingClientRect();
+
+let clientX = e.clientX;
+let clientY = e.clientY;
+
+if(e.touches){
+clientX = e.touches[0].clientX;
+clientY = e.touches[0].clientY;
 }
 
-else if(attempts===2){
-btn.innerText="Last chance to go back.";
-moveButton();
+return {
+x: clientX - rect.left,
+y: clientY - rect.top
+};
+
 }
 
-else if(attempts===3){
-btn.innerText="Alright… open it.";
-moveButton();
+function startDraw(e){
+
+drawing = true;
+hasSigned = true;
+
+const pos = getPosition(e);
+
+ctx.beginPath();
+ctx.moveTo(pos.x,pos.y);
+
 }
 
-else{
+function draw(e){
+
+if(!drawing) return;
+
+const pos = getPosition(e);
+
+ctx.lineWidth = 2;
+ctx.lineCap = "round";
+
+ctx.lineTo(pos.x,pos.y);
+ctx.stroke();
+
+}
+
+function stopDraw(){
+
+drawing = false;
+ctx.beginPath();
+
+}
+
+/* Mouse events */
+
+canvas.addEventListener("mousedown",startDraw);
+canvas.addEventListener("mousemove",draw);
+canvas.addEventListener("mouseup",stopDraw);
+canvas.addEventListener("mouseleave",stopDraw);
+
+/* Touch events */
+
+canvas.addEventListener("touchstart",startDraw);
+canvas.addEventListener("touchmove",draw);
+canvas.addEventListener("touchend",stopDraw);
+
+
+/* CLEAR SIGNATURE */
+
+function clearSignature(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+hasSigned=false;
+
+}
+
+
+/* ACCEPT BUTTON */
+
+document.getElementById("acceptBtn").onclick=function(){
+
+if(!hasSigned){
+alert("Please sign first 🙂");
+return;
+}
+
+/* convert signature */
+
+let signatureData = canvas.toDataURL("image/png");
+
+/* send to sheet */
+
+fetch(WEB_APP_URL,{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+type:"signature",
+signature:signatureData
+})
+});
+
+/* envelope animation */
+
+document.getElementById("envelope").style.transform="scale(0)";
+
+setTimeout(()=>{
+
+document.getElementById("letter").style.display="block";
+
+createSparkles();
+
+document.getElementById("nextBtn").style.display="inline-block";
+
+},600);
+
+};
+
+
+/* SPARKLES */
+
+function createSparkles(){
+
+let container=document.getElementById("sparkles");
+
+let count=0;
+
+let interval=setInterval(()=>{
+
+let s=document.createElement("div");
+s.className="sparkle";
+
+s.style.left=Math.random()*100+"vw";
+
+container.appendChild(s);
+
+setTimeout(()=>s.remove(),4000);
+
+count++;
+
+if(count>40){
+clearInterval(interval);
+}
+
+},80);
+
+}
+
+
+/* NEXT PAGE */
+
+function goNext(){
 window.location.href="phase5.html";
 }
 
-}
-
-function moveButton(){
-
-let x=(Math.random()*200)-100;
-let y=(Math.random()*100)-50;
-
-btn.style.transform="translate("+x+"px,"+y+"px)";
-
-}
-
 </script>
-
 </body>
 </html>

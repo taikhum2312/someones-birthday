@@ -2,10 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Moments</title>
+<title>Things I Noticed</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 
@@ -17,31 +17,45 @@ box-sizing:border-box;
 
 body{
 font-family:'Poppins',sans-serif;
-background:linear-gradient(to bottom,#ffffff,#f5ebe6);
+background:linear-gradient(to bottom,#ffffff,#f3e8e3);
 color:#3e2723;
-height:100vh;
+min-height:100vh;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-flex-direction:column;
-padding:20px;
+padding:40px 20px;
 }
 
-.message{
+.container{
+max-width:700px;
+}
+
+.title{
 font-family:'Playfair Display',serif;
-font-size:38px;
+font-size:40px;
 margin-bottom:40px;
-max-width:600px;
 opacity:0;
-transition:opacity 1s ease;
+transition:opacity 1.5s;
+}
+
+.line{
+font-size:18px;
+line-height:1.8;
+margin-bottom:25px;
+opacity:0;
+transform:translateY(10px);
+transition:all 1s ease;
 }
 
 .show{
 opacity:1;
+transform:translateY(0);
 }
 
 button{
+margin-top:40px;
 padding:12px 30px;
 border:none;
 border-radius:30px;
@@ -49,24 +63,11 @@ background:#5d4037;
 color:white;
 cursor:pointer;
 font-size:16px;
-transition:0.3s;
+display:none;
 }
 
 button:hover{
 transform:scale(1.05);
-}
-
-.video-container{
-display:none;
-flex-direction:column;
-align-items:center;
-}
-
-video{
-width:90%;
-max-width:600px;
-border-radius:12px;
-margin-bottom:30px;
 }
 
 </style>
@@ -74,70 +75,67 @@ margin-bottom:30px;
 
 <body>
 
-<div id="scene1">
+<div class="container">
 
-<div id="line1" class="message">These aren’t big moments.</div>
+<div class="title" id="title">There are a few things I've noticed.</div>
 
-<div id="line2" class="message">Just moments I liked.</div>
-
-<button id="showBtn" style="display:none;" onclick="showVideo()">Show me</button>
-
+<div class="line" id="l1">
+You care more deeply than you usually show.
 </div>
 
-<div id="videoSection" class="video-container">
+<div class="line" id="l2">
+You try to act strong even when something bothers you.
+</div>
 
-<video id="memoryVideo" controls>
-<source src="memory.mp4" type="video/mp4">
-</video>
+<div class="line" id="l3">
+When someone you care about is upset, you try to fix it.
+</div>
 
-<div id="afterMessage" class="message"></div>
+<div class="line" id="l4">
+You’re the kind of person who listens before judging.
+</div>
 
-<button id="nextBtn" style="display:none;" onclick="goNext()">Continue</button>
+<div class="line" id="l5">
+And even when you're annoyed or tired… you still stay.
+</div>
+
+<div class="line" id="l6">
+Not many people have that kind of patience.
+</div>
+
+<div class="line" id="l7">
+You probably don’t realize how much that matters.
+</div>
+
+<div class="line" id="l8">
+But it does.
+</div>
+
+<button id="nextBtn" onclick="goNext()">Continue</button>
 
 </div>
 
 <script>
 
-/* Scene 1 Timing */
-
+function reveal(id,delay){
 setTimeout(()=>{
-document.getElementById("line1").classList.add("show");
-},1000);
-
-setTimeout(()=>{
-document.getElementById("line2").classList.add("show");
-},4000);
-
-setTimeout(()=>{
-document.getElementById("showBtn").style.display="inline-block";
-},7000);
-
-/* Show Video */
-
-function showVideo(){
-
-document.getElementById("scene1").style.display="none";
-document.getElementById("videoSection").style.display="flex";
-
+document.getElementById(id).classList.add("show");
+},delay);
 }
 
-/* Video End Event */
+reveal("title",1000);
+reveal("l1",3500);
+reveal("l2",6000);
+reveal("l3",8500);
+reveal("l4",11000);
+reveal("l5",13500);
+reveal("l6",16000);
+reveal("l7",18500);
+reveal("l8",21000);
 
-const video=document.getElementById("memoryVideo");
-
-video.onended=function(){
-
-const msg=document.getElementById("afterMessage");
-
-msg.innerHTML="Some people deserve effort.<br><br>You’re one of them.";
-
-msg.classList.add("show");
-
+setTimeout(()=>{
 document.getElementById("nextBtn").style.display="inline-block";
-
-}
-
-/* Next Phase */
+},24000);
 
 function goNext(){
 window.location.href="phase4.html";
