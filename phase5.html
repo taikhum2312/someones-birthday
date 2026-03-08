@@ -61,6 +61,8 @@ opacity:0;
 transition:opacity 1.5s;
 }
 
+/* sparkles */
+
 #sparkles{
 position:fixed;
 top:0;
@@ -95,14 +97,40 @@ opacity:0;
 }
 }
 
+/* credits button */
+
+#creditsBtn{
+display:none;
+margin-top:40px;
+padding:12px 30px;
+border:none;
+border-radius:30px;
+background:#5d4037;
+color:white;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+#creditsBtn:hover{
+transform:scale(1.05);
+}
+
+.finalMoment{
+color:#5d4037;
+text-shadow:0 0 12px rgba(215,168,110,0.8);
+transform:scale(1.05);
+transition:all 1.5s ease;
+}
 </style>
 </head>
 
 <body>
 
-<audio id="bgMusic" autoplay loop>
+<audio id="bgMusic" loop>
 <source src="birthday-music.mp3" type="audio/mpeg">
 </audio>
+
 <div id="sparkles"></div>
 
 <div class="container">
@@ -161,9 +189,15 @@ It's about reminding you that you matter more than you think.
 Happy Birthday again, Sakina.
 </div>
 
+<button id="creditsBtn" onclick="goCredits()">
+Wait… one more thing →
+</button>
+
 </div>
 
 <script>
+
+/* reveal text */
 
 function reveal(id,delay){
 setTimeout(()=>{
@@ -184,9 +218,28 @@ reveal("line9",23500);
 reveal("line10",26000);
 reveal("line11",28500);
 reveal("line12",31000);
-reveal("end",34000);
+setTimeout(()=>{
+const end=document.getElementById("end");
 
-/* Sparkle generator */
+end.classList.add("show");
+end.classList.add("finalMoment");
+
+/* dim other text */
+
+document.querySelectorAll(".message").forEach(m=>{
+m.style.opacity="0.5";
+});
+
+},34000);
+
+/* show credits button */
+
+setTimeout(()=>{
+document.getElementById("creditsBtn").style.display="inline-block";
+},38000);
+
+
+/* sparkle generator */
 
 setInterval(()=>{
 
@@ -203,12 +256,32 @@ setTimeout(()=>sparkle.remove(),7000);
 },400);
 
 
-/* Mobile music fix */
+/* mobile autoplay fix */
 
 document.body.addEventListener("click",()=>{
 const music=document.getElementById("bgMusic");
 music.play().catch(()=>{});
 },{once:true});
+
+
+function goCredits(){
+window.location.href="phase6.html";
+}
+
+function startMusic(){
+
+const music = document.getElementById("bgMusic");
+
+music.volume = 0.35;
+
+music.play().catch(()=>{});
+
+}
+
+/* start music when user interacts */
+
+document.addEventListener("click",startMusic,{once:true});
+document.addEventListener("touchstart",startMusic,{once:true});
 
 </script>
 
