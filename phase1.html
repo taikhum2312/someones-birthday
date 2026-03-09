@@ -9,10 +9,6 @@
 
 <style>
 
-/* ============================= */
-/* RESET */
-/* ============================= */
-
 *{
 margin:0;
 padding:0;
@@ -22,16 +18,14 @@ box-sizing:border-box;
 body{
 height:100vh;
 overflow:hidden;
-background:rgb(255, 255, 255);
+background:rgb(255,255,255);
 display:flex;
 justify-content:center;
 align-items:center;
 font-family:'Poppins',sans-serif;
 }
 
-/* ============================= */
-/* BACKGROUND LAYER */
-/* ============================= */
+/* background */
 
 .background{
 position:fixed;
@@ -46,7 +40,8 @@ animation:fadeInBg 3s ease forwards;
 to{opacity:1;}
 }
 
-/* Floating particles */
+/* particles */
+
 .particles{
 position:fixed;
 width:100%;
@@ -68,9 +63,7 @@ from{transform:translateY(100vh);}
 to{transform:translateY(-10vh);}
 }
 
-/* ============================= */
-/* CONTENT */
-/* ============================= */
+/* content */
 
 .container{
 position:relative;
@@ -115,7 +108,7 @@ animation:glow 2s ease forwards;
 100%{text-shadow:0 0 25px rgba(93,64,55,0.35);}
 }
 
-/* Enter button */
+/* button */
 
 button{
 margin-top:60px;
@@ -140,7 +133,8 @@ button:hover{
 transform:translateY(-2px) scale(1.05);
 }
 
-/* Slow zoom effect */
+/* zoom */
+
 .zoom{
 animation:zoomIn 40s ease forwards;
 }
@@ -160,18 +154,16 @@ to{transform:scale(1.05);}
 
 <div class="container">
 <div id="text" class="message"></div>
-<button id="enterBtn" onclick="enterSite()">Enter</button>
+<button id="enterBtn" onclick="enterSite()">Continue →</button>
 </div>
 
 <audio id="bgMusic" src="music.mp3"></audio>
 
 <script>
 
-/* ============================= */
-/* CREATE PARTICLES */
-/* ============================= */
+/* particles */
 
-const particlesContainer = document.getElementById("particles");
+const particlesContainer=document.getElementById("particles");
 
 for(let i=0;i<25;i++){
 const p=document.createElement("div");
@@ -181,18 +173,16 @@ p.style.animationDuration=(15+Math.random()*10)+"s";
 particlesContainer.appendChild(p);
 }
 
-/* ============================= */
-/* TEXT SEQUENCE */
-/* ============================= */
+/* intro sequence */
 
 const textElement=document.getElementById("text");
 const enterBtn=document.getElementById("enterBtn");
 
 const sequence=[
-"ACCESS GRANTED.",
-"Happy Birthday,<br><span class='highlight'>Sakina.</span>",
-"Everyone will wish you today.",
-"I just didn’t want to do it normally."
+"I made something for you.",
+"But before you see it,<br>there’s a small form.",
+"Nothing serious.",
+"Just a promise."
 ];
 
 let index=0;
@@ -221,47 +211,37 @@ enterBtn.classList.add("show");
 }
 
 },1500);
+
 }
 
 setTimeout(nextLine,4000);
 
-/* ============================= */
-/* ENTER */
-/* ============================= */
+/* multi click enter */
 
-/* ============================= */
-/* MULTI-CLICK ENTER SEQUENCE */
-/* ============================= */
-
-let enterClicks = 0;
+let enterClicks=0;
 
 function enterSite(){
 
-const textElement = document.getElementById("text");
-const enterBtn = document.getElementById("enterBtn");
-
 enterClicks++;
 
-if(enterClicks === 1){
-textElement.innerHTML = "Are you sure,<br><span class='highlight'>Sakina?</span>";
-textElement.classList.add("show");
+if(enterClicks===1){
+textElement.innerHTML="Are you sure,<br><span class='highlight'>Sakina?</span>";
 }
 
-else if(enterClicks === 2){
-textElement.innerHTML = "There’s no going back,<br><span class='highlight'>Sakina.</span>";
+else if(enterClicks===2){
+textElement.innerHTML="There’s no going back,<br><span class='highlight'>Sakina.</span>";
 }
 
-else if(enterClicks === 3){
-textElement.innerHTML = "It’s risky… you might faint. 😏";
+else if(enterClicks===3){
+textElement.innerHTML="It’s risky… you might faint. 😏";
 }
 
-else if(enterClicks === 4){
-
-enterBtn.innerText = "Okay. Enter.";
-enterBtn.style.transform = "scale(1.1)";
+else if(enterClicks===4){
+enterBtn.innerText="Okay. Continue.";
+enterBtn.style.transform="scale(1.1)";
 }
 
-else if(enterClicks === 5){
+else if(enterClicks===5){
 
 const music=document.getElementById("bgMusic");
 music.volume=0.4;
@@ -271,8 +251,9 @@ document.body.style.transition="opacity 1.5s ease";
 document.body.style.opacity="0";
 
 setTimeout(()=>{
-window.location.href="phase2.html";
+window.location.href="phase4.html";
 },1500);
+
 }
 
 }

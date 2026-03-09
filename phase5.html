@@ -61,6 +61,10 @@ opacity:0;
 transition:opacity 1.5s;
 }
 
+.message{
+transition:opacity 1.5s ease, transform 1s ease;
+}
+
 /* sparkles */
 
 #sparkles{
@@ -122,6 +126,7 @@ text-shadow:0 0 12px rgba(215,168,110,0.8);
 transform:scale(1.05);
 transition:all 1.5s ease;
 }
+
 </style>
 </head>
 
@@ -137,9 +142,7 @@ transition:all 1.5s ease;
 
 <div class="title" id="title">Happy Birthday, Sakina.</div>
 
-<div class="message" id="line1">
-There are a lot of things I could say today.
-</div>
+<div class="message" id="line1">There are a lot of things I could say today.</div>
 
 <div class="message" id="line2">
 But the truth is, your presence in my life has quietly become something important.
@@ -197,7 +200,7 @@ Wait… one more thing →
 
 <script>
 
-/* reveal text */
+/* reveal system */
 
 function reveal(id,delay){
 setTimeout(()=>{
@@ -218,13 +221,15 @@ reveal("line9",23500);
 reveal("line10",26000);
 reveal("line11",28500);
 reveal("line12",31000);
+
+/* final cinematic moment */
+
 setTimeout(()=>{
+
 const end=document.getElementById("end");
 
 end.classList.add("show");
 end.classList.add("finalMoment");
-
-/* dim other text */
 
 document.querySelectorAll(".message").forEach(m=>{
 m.style.opacity="0.5";
@@ -239,7 +244,7 @@ document.getElementById("creditsBtn").style.display="inline-block";
 },38000);
 
 
-/* sparkle generator */
+/* sparkles */
 
 setInterval(()=>{
 
@@ -253,35 +258,30 @@ document.getElementById("sparkles").appendChild(sparkle);
 
 setTimeout(()=>sparkle.remove(),7000);
 
-},400);
+},600);
 
 
-/* mobile autoplay fix */
+/* music start */
 
-document.body.addEventListener("click",()=>{
+function startMusic(){
+
 const music=document.getElementById("bgMusic");
-music.play().catch(()=>{});
-},{once:true});
 
+music.volume=0.35;
+
+music.play().catch(()=>{});
+
+}
+
+document.addEventListener("click",startMusic,{once:true});
+document.addEventListener("touchstart",startMusic,{once:true});
+
+
+/* credits */
 
 function goCredits(){
 window.location.href="phase6.html";
 }
-
-function startMusic(){
-
-const music = document.getElementById("bgMusic");
-
-music.volume = 0.35;
-
-music.play().catch(()=>{});
-
-}
-
-/* start music when user interacts */
-
-document.addEventListener("click",startMusic,{once:true});
-document.addEventListener("touchstart",startMusic,{once:true});
 
 </script>
 

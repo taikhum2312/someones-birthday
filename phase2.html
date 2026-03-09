@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Things I’ve Noticed</title>
+<title>Unlocked Section</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
@@ -140,6 +140,7 @@ opacity:0.4;
 cursor:not-allowed;
 transform:none;
 }
+
 .next-btn:hover{
 transform:scale(1.05);
 }
@@ -164,19 +165,17 @@ animation:fall 3s linear forwards;
 }
 
 @keyframes fall{
-0%{
-transform:translateY(-10vh) rotate(0deg);
+0%{transform:translateY(-10vh) rotate(0deg);}
+100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
 }
-100%{
-transform:translateY(100vh) rotate(720deg);
-opacity:0;
-}
-}
+
 </style>
 </head>
 
 <body>
+
 <div id="confetti"></div>
+
 <!-- ============================= -->
 <!-- SWIPE PANELS -->
 <!-- ============================= -->
@@ -185,22 +184,25 @@ opacity:0;
 <div class="swipe-container" id="swipe">
 
 <div class="panel">
-Before we go further…
+Good.<br>
+Agreement accepted.
 <div class="tap-indicator">Tap to continue →</div>
 </div>
 
 <div class="panel">
-There are a few things I’ve noticed.
+That means you unlocked<br>
+the next part.
 <div class="tap-indicator">Tap to continue →</div>
 </div>
 
 <div class="panel">
-Nothing dramatic.
+There are a few chocolates here.
 <div class="tap-indicator">Tap to continue →</div>
 </div>
 
 <div class="panel">
-Just things that matter.
+Each one hides a small thought.<br>
+Pick one.
 <div class="tap-indicator">Tap to continue →</div>
 </div>
 
@@ -213,29 +215,16 @@ Just things that matter.
 
 <div class="choco-section" id="chocoSection">
 
-<h2>Things I’ve Noticed.</h2>
+<h2>Chocolate Section</h2>
 
 <div class="choco-grid">
 
-<!-- ===== 6 CHOCOLATES (ACTIVE DEFAULT) ===== -->
 <div id="choco0" class="choco" onclick="revealText(0)">🍫</div>
 <div id="choco1" class="choco" onclick="revealText(1)">🍫</div>
 <div id="choco2" class="choco" onclick="revealText(2)">🍫</div>
 <div id="choco3" class="choco" onclick="revealText(3)">🍫</div>
 <div id="choco4" class="choco" onclick="revealText(4)">🍫</div>
 <div id="choco5" class="choco" onclick="revealText(5)">🍫</div>
-
-<!-- ===== 8 CHOCOLATES (COMMENTED OPTION) ===== -->
-<!--
-<div class="choco" onclick="revealText(0)">🍫</div>
-<div class="choco" onclick="revealText(1)">🍫</div>
-<div class="choco" onclick="revealText(2)">🍫</div>
-<div class="choco" onclick="revealText(3)">🍫</div>
-<div class="choco" onclick="revealText(4)">🍫</div>
-<div class="choco" onclick="revealText(5)">🍫</div>
-<div class="choco" onclick="revealText(6)">🍫</div>
-<div class="choco" onclick="revealText(7)">🍫</div>
--->
 
 </div>
 
@@ -245,22 +234,17 @@ Just things that matter.
 <button id="nextBtn" class="next-btn" onclick="goNext()" disabled>
 Continue
 </button>
+
 </div>
 
 <script>
 
+/* logic unchanged */
+
 let chocolatesOpened = 0;
 const totalChocolates = 6;
-/* ============================= */
-/* CONFIG – PUT YOUR WEB APP URL HERE */
-/* ============================= */
 
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbziV90ORoVyBuwRsgnhnrPtrqadseWM5B2VGqKwOUR1H_KcYKXsBJEfwWzDyAwkxh4g/exec";
-
-
-/* ============================= */
-/* SWIPE LOGIC */
-/* ============================= */
 
 let currentPanel=0;
 const swipe=document.getElementById("swipe");
@@ -281,72 +265,65 @@ nextPanel();
 }
 });
 
-/* ============================= */
-/* TEXT CONTENT */
-/* ============================= */
-
 const chocolates = [
 
-    {
-    text: "You care more deeply than you let people see.",
-    options: [
-        { label: "Maybe I do.", reaction: "I know you do." },
-        { label: "Not really.", reaction: "You hide it well then." }
-    ]
-    },
+{
+text:"You care more deeply than you let people see.",
+options:[
+{label:"Maybe I do.",reaction:"I know you do."},
+{label:"Not really.",reaction:"You hide it well then."}
+]
+},
 
-    {
-    text: "You value consistency more than big gestures.",
-    options: [
-        { label: "Consistency matters.", reaction: "Exactly." },
-        { label: "Big gestures are nice too.", reaction: "Only when they’re real." }
-    ]
-    },
+{
+text:"You value consistency more than big gestures.",
+options:[
+{label:"Consistency matters.",reaction:"Exactly."},
+{label:"Big gestures are nice too.",reaction:"Only when they’re real."}
+]
+},
 
-    {
-    text: "You notice effort, even when you don’t say it.",
-    options: [
-        { label: "I notice everything.", reaction: "I’m aware." },
-        { label: "I don’t pay attention.", reaction: "That’s not true." }
-    ]
-    },
+{
+text:"You notice effort, even when you don’t say it.",
+options:[
+{label:"I notice everything.",reaction:"I’m aware."},
+{label:"I don’t pay attention.",reaction:"That’s not true."}
+]
+},
 
-    {
-    text: "You don’t open up to everyone.",
-    options: [
-        { label: "I’m selective.", reaction: "That’s a strength." },
-        { label: "I’m open.", reaction: "Only when it feels safe." }
-    ]
-    },
+{
+text:"You don’t open up to everyone.",
+options:[
+{label:"I’m selective.",reaction:"That’s a strength."},
+{label:"I’m open.",reaction:"Only when it feels safe."}
+]
+},
 
-    {
-    text: "You are more important than you think.",
-    options: [
-        { label: "I don’t see it.", reaction: "One day you will." },
-        { label: "Maybe I am.", reaction: "I thought so." }
-    ]
-    },
+{
+text:"You are more important than you think.",
+options:[
+{label:"I don’t see it.",reaction:"One day you will."},
+{label:"Maybe I am.",reaction:"I thought so."}
+]
+},
 
-    {
-    text: "You don’t feel temporary.",
-    options: [
-        { label: "What does that mean?", reaction: "It means you stay." },
-        { label: "That’s heavy.", reaction: "Only slightly." }
-    ]
-    }
+{
+text:"You don’t feel temporary.",
+options:[
+{label:"What does that mean?",reaction:"It means you stay."},
+{label:"That’s heavy.",reaction:"Only slightly."}
+]
+}
 
 ];
-/* ============================= */
-/* TYPEWRITER + RESPONSE SYSTEM */
-/* ============================= */
 
 function revealText(index){
 
-const choco = document.getElementById("choco"+index);
+const choco=document.getElementById("choco"+index);
 
 if(!choco.classList.contains("eaten")){
-    choco.classList.add("eaten");
-    chocolatesOpened++;
+choco.classList.add("eaten");
+chocolatesOpened++;
 }
 
 checkCompletion();
@@ -369,10 +346,6 @@ showOptions(index);
 
 type();
 }
-
-/* ============================= */
-/* SHOW RESPONSE BUTTONS */
-/* ============================= */
 
 function showOptions(index){
 
@@ -407,38 +380,25 @@ optionsDiv.appendChild(btn2);
 container.appendChild(optionsDiv);
 }
 
-/* ============================= */
-/* HANDLE RESPONSE */
-/* ============================= */
-
 function handleResponse(index,choice,reaction){
 
 const container=document.getElementById("revealText");
 
-container.innerHTML += "<br><br><em>"+reaction+"</em>";
-container.innerHTML += "<br><br><strong>Noted.</strong>";
+container.innerHTML+="<br><br><em>"+reaction+"</em>";
+container.innerHTML+="<br><br><strong>Noted.</strong>";
 
-sendToSheet(
-index,
-chocolates[index].text,
-choice
-);
+sendToSheet(index,chocolates[index].text,choice);
 
 }
-
-/* ============================= */
-/* SEND DATA TO GOOGLE SHEET */
-/* ============================= */
 
 function sendToSheet(index,text,choice){
 
 fetch(WEB_APP_URL,{
 method:"POST",
 mode:"no-cors",
-headers:{
-"Content-Type":"application/json"
-},
+headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
+type:"response",
 index:index,
 text:text,
 choice:choice
@@ -447,27 +407,24 @@ choice:choice
 
 }
 
-/* ============================= */
-/* NEXT PHASE */
-/* ============================= */
-
 function goNext(){
 window.location.href="phase3.html";
 }
+
 function checkCompletion(){
 
-const btn = document.getElementById("nextBtn");
+const btn=document.getElementById("nextBtn");
 
-if(chocolatesOpened === totalChocolates){
+if(chocolatesOpened===totalChocolates){
 
-btn.disabled = false;
-btn.innerText = "Continue";
+btn.disabled=false;
+btn.innerText="Continue";
 
 celebrateCompletion();
 
 }else{
 
-btn.innerText = "Finish the chocolates first";
+btn.innerText="Finish the chocolates first";
 
 }
 
@@ -477,9 +434,9 @@ checkCompletion();
 
 function celebrateCompletion(){
 
-const message = document.getElementById("completionMessage");
+const message=document.getElementById("completionMessage");
 
-message.innerHTML = "<br><strong>Nice. You finished them.</strong>";
+message.innerHTML="<br><strong>Nice. You finished them.</strong>";
 
 for(let i=0;i<40;i++){
 

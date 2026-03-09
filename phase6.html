@@ -17,45 +17,67 @@ font-family:'Poppins',sans-serif;
 overflow:hidden;
 }
 
+/* credits container */
+
 .credits{
 position:absolute;
-bottom:-100%;
+bottom:-120%;
 width:100%;
 text-align:center;
-animation:scrollCredits 35s linear forwards;
+animation:scrollCredits 38s linear forwards;
+padding-bottom:200px;
 }
+
+/* headings */
 
 h1{
 font-family:'Playfair Display',serif;
-margin-bottom:30px;
+margin-bottom:40px;
+font-size:36px;
 }
 
+/* lines */
+
 p{
-margin:15px 0;
+margin:18px 0;
 font-size:18px;
 }
+
+/* strike joke */
 
 .strike{
 text-decoration:line-through;
 opacity:0.6;
 }
 
+/* ending line */
+
+.end{
+margin-top:90px;
+font-size:24px;
+font-family:'Playfair Display',serif;
+}
+
+/* final note */
+
+.final-note{
+margin-top:20px;
+font-size:16px;
+opacity:0.7;
+}
+
+/* scroll animation */
+
 @keyframes scrollCredits{
 
 0%{
-bottom:-100%;
+bottom:-120%;
 }
 
 100%{
-bottom:100%;
+bottom:120%;
 }
 
-}
-
-.end{
-margin-top:80px;
-font-size:22px;
-font-family:'Playfair Display',serif;
 }
 
 </style>
@@ -70,43 +92,32 @@ font-family:'Playfair Display',serif;
 <p>Directed by</p>
 <p><strong>Kaddu 🎃</strong></p>
 
-<br>
-
 <p>Produced by</p>
 <p><strong>Kaddu 🎃</strong></p>
-
-<br>
 
 <p>Designed by</p>
 <p><strong>Kaddu 🎃</strong></p>
 
-<br>
-
 <p>Coded by</p>
 <p><strong>Kaddu 🎃</strong></p>
 
-<br>
-
 <p>Efforts dedicated to</p>
 
-<p class="strike"><strong>Potato😁</strong></p>
-
+<p class="strike"><strong>Potato 😁</strong></p>
 <p><strong>Sakina</strong></p>
-
-<br>
 
 <p>Special appearance by</p>
 <p><strong>Sakina's patience</strong></p>
 
-<br>
-
 <p>Supported by</p>
 <p><strong>Coffee and late nights</strong></p>
 
-<br>
-
 <p class="end">
 Happy Birthday Sakina 🎂
+</p>
+
+<p class="final-note">
+Made with effort for someone important.
 </p>
 
 </div>

@@ -47,7 +47,7 @@ opacity:1;
 .envelope{
 font-size:90px;
 margin:30px 0;
-transition:transform 0.6s;
+transition:transform 0.6s ease, opacity 0.6s ease;
 }
 
 button{
@@ -121,6 +121,7 @@ left:0;
 width:100%;
 height:100%;
 pointer-events:none;
+overflow:hidden;
 }
 
 .sparkle{
@@ -164,11 +165,11 @@ opacity:0;
 
 <h3 style="margin-bottom:10px;">Sakina Agreement Form</h3>
 
-<label><input type="checkbox"> I promise I will not get mad.</label>
-<label><input type="checkbox"> I promise I will not overthink this.</label>
-<label><input type="checkbox"> I promise I will not say my time was wasted.</label>
-<label><input type="checkbox"> I promise I will not feel guilty about the effort.</label>
-<label><input type="checkbox"> I promise I will just read it.</label>
+<label><input type="checkbox" class="agree"> I promise I will not get mad.</label>
+<label><input type="checkbox" class="agree"> I promise I will not overthink this.</label>
+<label><input type="checkbox" class="agree"> I promise I will not say my time was wasted.</label>
+<label><input type="checkbox" class="agree"> I promise I will not feel guilty about the effort.</label>
+<label><input type="checkbox" class="agree"> I promise I will just read it.</label>
 
 <p style="margin-top:15px;">Sign here:</p>
 
@@ -183,13 +184,14 @@ opacity:0;
 
 <div class="letter" id="letter">💌</div>
 
-<button id="nextBtn" onclick="goNext()">Open the final page</button>
+<button id="nextBtn" onclick="goNext()">Continue</button>
 
 </div>
 
 <div id="sparkles"></div>
 
 <script>
+
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbziV90ORoVyBuwRsgnhnrPtrqadseWM5B2VGqKwOUR1H_KcYKXsBJEfwWzDyAwkxh4g/exec";
 
 /* TEXT TIMING */
@@ -220,34 +222,36 @@ this.style.display="none";
 const canvas = document.getElementById("signaturePad");
 const ctx = canvas.getContext("2d");
 
-let drawing = false;
-let hasSigned = false;
+let drawing=false;
+let hasSigned=false;
 
 function getPosition(e){
 
-const rect = canvas.getBoundingClientRect();
+const rect=canvas.getBoundingClientRect();
 
-let clientX = e.clientX;
-let clientY = e.clientY;
+let clientX=e.clientX;
+let clientY=e.clientY;
 
 if(e.touches){
-clientX = e.touches[0].clientX;
-clientY = e.touches[0].clientY;
+clientX=e.touches[0].clientX;
+clientY=e.touches[0].clientY;
 }
 
-return {
-x: clientX - rect.left,
-y: clientY - rect.top
+return{
+x:clientX-rect.left,
+y:clientY-rect.top
 };
 
 }
 
 function startDraw(e){
 
-drawing = true;
-hasSigned = true;
+e.preventDefault();
 
-const pos = getPosition(e);
+drawing=true;
+hasSigned=true;
+
+const pos=getPosition(e);
 
 ctx.beginPath();
 ctx.moveTo(pos.x,pos.y);
@@ -258,10 +262,12 @@ function draw(e){
 
 if(!drawing) return;
 
-const pos = getPosition(e);
+e.preventDefault();
 
-ctx.lineWidth = 2;
-ctx.lineCap = "round";
+const pos=getPosition(e);
+
+ctx.lineWidth=2;
+ctx.lineCap="round";
 
 ctx.lineTo(pos.x,pos.y);
 ctx.stroke();
@@ -269,33 +275,25 @@ ctx.stroke();
 }
 
 function stopDraw(){
-
-drawing = false;
+drawing=false;
 ctx.beginPath();
-
 }
-
-/* Mouse events */
 
 canvas.addEventListener("mousedown",startDraw);
 canvas.addEventListener("mousemove",draw);
 canvas.addEventListener("mouseup",stopDraw);
 canvas.addEventListener("mouseleave",stopDraw);
 
-/* Touch events */
-
-canvas.addEventListener("touchstart",startDraw);
-canvas.addEventListener("touchmove",draw);
+canvas.addEventListener("touchstart",startDraw,{passive:false});
+canvas.addEventListener("touchmove",draw,{passive:false});
 canvas.addEventListener("touchend",stopDraw);
 
 
 /* CLEAR SIGNATURE */
 
 function clearSignature(){
-
 ctx.clearRect(0,0,canvas.width,canvas.height);
 hasSigned=false;
-
 }
 
 
@@ -303,16 +301,21 @@ hasSigned=false;
 
 document.getElementById("acceptBtn").onclick=function(){
 
+const checks=document.querySelectorAll(".agree");
+
+for(let c of checks){
+if(!c.checked){
+alert("You must accept the conditions first 🙂");
+return;
+}
+}
+
 if(!hasSigned){
 alert("Please sign first 🙂");
 return;
 }
 
-/* convert signature */
-
-let signatureData = canvas.toDataURL("image/png");
-
-/* send to sheet */
+let signatureData=canvas.toDataURL("image/png");
 
 fetch(WEB_APP_URL,{
 method:"POST",
@@ -326,9 +329,10 @@ signature:signatureData
 })
 });
 
-/* envelope animation */
+const envelope=document.getElementById("envelope");
 
-document.getElementById("envelope").style.transform="scale(0)";
+envelope.style.transform="scale(0)";
+envelope.style.opacity="0";
 
 setTimeout(()=>{
 
@@ -376,9 +380,10 @@ clearInterval(interval);
 /* NEXT PAGE */
 
 function goNext(){
-window.location.href="phase5.html";
+window.location.href="phase2.html";
 }
 
 </script>
+
 </body>
 </html>
